@@ -1,0 +1,375 @@
+---
+API: 2
+OpenSesame: 3.1.5
+Platform: nt
+---
+set width 1920
+set uniform_coordinates yes
+set title TML_training_replication
+set subject_parity even
+set subject_nr 0
+set start session_sequence
+set sound_sample_size -16
+set sound_freq 48000
+set sound_channels 2
+set sound_buf_size 1024
+set sampler_backend legacy
+set round_decimals 2
+set mouse_backend xpyriment
+set keyboard_backend legacy
+set height 1080
+set fullscreen no
+set form_clicks no
+set foreground white
+set font_underline no
+set font_size 18
+set font_italic no
+set font_family mono
+set font_bold no
+set experiment_path "C:\\Users\\adkinsty\\Box Sync\\LeeLab\\Experiments\\Exp_files\\reaching"
+set disable_garbage_collection yes
+set description "The main experiment item"
+set coordinates uniform
+set compensation 0
+set color_backend legacy
+set clock_backend legacy
+set canvas_backend xpyriment
+set bidi no
+set background black
+
+define loop block_loop
+	set source_file ""
+	set source table
+	set repeat 15
+	set order random
+	set description "loops through conditions until block is finished"
+	set cycles 2
+	set continuous no
+	set break_if_on_first yes
+	set break_if never
+	setcycle 0 pen_side right
+	setcycle 1 pen_side left
+	run trial_sequence
+
+define sequence block_sequence
+	set flush_keyboard yes
+	set description "Runs a number of items in sequence"
+	run block_start always
+	run block_values always
+	run block_loop always
+
+define sketchpad block_start
+	set duration keypress
+	set description "Displays stimuli"
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=25 html=yes show_if=always text="You are about to begin block [block] of [total_blocks]. <br /><br />Press any key to start the block." x=0 y=0 z_index=0
+
+define sketchpad block_values
+	set duration keypress
+	set description "dispalys penalty and target values"
+	draw circle color=red fill=1 penwidth=2 r=100 show_if=always x=-128 y=-96 z_index=0
+	draw circle color=green fill=1 penwidth=4 r=100 show_if=always x=128 y=-96 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=27 html=yes show_if=always text="-[pen_val] Points" x=-128 y=-96 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=27 html=yes show_if=always text="+[targ_val] Points" x=128 y=-96 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=30 html=yes show_if=always text="" x=32 y=-64 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=27 html=yes show_if=always text="After you memorize the values above,<br />press any key to continue." x=32 y=224 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=27 html=yes show_if=always text="Below are the points you will get for hitting the<br />red penalty region or green target region." x=32 y=-384 z_index=0
+
+define loop experiment_loop
+	set source_file ""
+	set source table
+	set repeat 1
+	set order sequential
+	set description "loops through blocks until experiment is finished"
+	set cycles 10
+	set continuous no
+	set break_if_on_first yes
+	set break_if never
+	setcycle 0 time_limit i
+	setcycle 0 block 1
+	setcycle 0 pen_val 0
+	setcycle 0 targ_val 100
+	setcycle 1 time_limit 850
+	setcycle 1 block 2
+	setcycle 1 pen_val 0
+	setcycle 1 targ_val 100
+	setcycle 2 time_limit 850
+	setcycle 2 block 3
+	setcycle 2 pen_val 0
+	setcycle 2 targ_val 100
+	setcycle 3 time_limit 850
+	setcycle 3 block 4
+	setcycle 3 pen_val 0
+	setcycle 3 targ_val 100
+	setcycle 4 time_limit 700
+	setcycle 4 block 5
+	setcycle 4 pen_val 0
+	setcycle 4 targ_val 100
+	setcycle 5 time_limit 700
+	setcycle 5 block 6
+	setcycle 5 pen_val 0
+	setcycle 5 targ_val 100
+	setcycle 6 time_limit 700
+	setcycle 6 block 7
+	setcycle 6 pen_val 0
+	setcycle 6 targ_val 100
+	setcycle 7 time_limit 700
+	setcycle 7 block 8
+	setcycle 7 pen_val 0
+	setcycle 7 targ_val 100
+	setcycle 8 time_limit 700
+	setcycle 8 block 9
+	setcycle 8 pen_val 0
+	setcycle 8 targ_val 100
+	setcycle 9 time_limit 700
+	setcycle 9 block 10
+	setcycle 9 pen_val 0
+	setcycle 9 targ_val 100
+	run block_sequence
+
+define inline_script global_counters
+	set description "Executes Python code"
+	set _run ""
+	___prepare__
+	var.total_points = 0
+	var.total_blocks = 10
+	__end__
+
+define sketchpad initial_instructions
+	set duration keypress
+	set description "Displays stimuli"
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=18 html=yes show_if=always text="You are about to begin the training session of this experiment.<br /><br />You will begin each trial by pressing the spacebar<br />and looking at the center of the screen.<br />Hold down the space bar until the target appears,<br /> then reach out and touch the target circle.<br />If take too long to reach, you<br /> will incur a heavy timeout penalty.<br /><br />Please use only your right index finger to play this game.<br /><br />You will earn points by touching within the green circle.<br />You will be rewarded with 25 cents for every<br /> 1000 points that you accumulate throughout the <br />training and test sessions of this experiment. <br /><br /><br />If you are confused about any of the above instructions,<br /> please ask the experimenter. <br /><br />If you have read and understand the above intructions,<br /> please press any key to continue." x=0 y=-32 z_index=0
+
+define notepad notes
+	set note "Xpyriment and Legacy backends seem to be most suitable for reading touch screen responses. "
+	set description "A simple notepad to document your experiment. This plug-in does nothing."
+
+define sequence session_sequence
+	set flush_keyboard yes
+	set description "Runs a number of items in sequence"
+	run notes always
+	run initial_instructions always
+	run global_counters always
+	run experiment_loop always
+
+define logger trial_logger
+	set description "Logs experimental data"
+	set auto_log no
+	log poke_y
+	log trial_time
+	log points
+	log targ_x
+	log targ_y
+	log pen_x
+	log block
+	log time_limit
+	log poke_x
+	log pen_val
+	log targ_val
+	log too_slow
+	log too_soon
+	log pen_side
+	log release_time
+
+define inline_script trial_script
+	set description "Fixation, Bound box, circles, trial feedback"
+	___run__
+	#present fixation point until space bar is pressed
+	while True:
+		fixation_canvas.show()
+		response, press_time = kb.get_key()
+		if response in ['space', 'SPACE']:
+			press_time = clock.time()
+			break	
+	#presentation of blue bounding box for preset time limit
+	ref_time = clock.time()
+	while pg.key.get_pressed()[pg.K_SPACE] and clock.time() - ref_time < bound_box_time:
+		bound_box_canvas.show()
+		#true iff the spacebar is released before the target appears
+		if not pg.key.get_pressed()[pg.K_SPACE]:
+			released_too_soon = True
+		else:
+			released_too_soon = False
+	
+	
+	#show the target and penalty configuration until the screen is poked or
+	#the spacebar is released too soon
+	if released_too_soon:
+		var.too_soon = 1
+	else:
+		var.too_soon = 0
+	released = False
+	ref_time = clock.time()
+	while True:
+		if not pg.key.get_pressed()[pg.K_SPACE]:
+			release_time = clock.time()
+			var.release_time = release_time - ref_time
+	#		released = True
+	#		if released and release_time - ref_time  < too_soon_time:
+	#			var.too_soon = True
+	#			print 'released after ' + str(release_time - ref_time) + 'ms' 
+	#		else:
+			#var.too_soon = False
+		button, poke_pos, poke_time = m.get_click(timeout = 0)
+		if button is not None:
+			break
+		config_canvas.show()	
+	
+	var.trial_time = poke_time - ref_time
+	print var.trial_time
+	#store poke position, poke time, and timings as  variables
+	too_slow = var.trial_time > var.time_limit
+	#var.too_slow = too_slow
+	
+	var.poke_x = poke_pos[0]
+	var.poke_y = poke_pos[1]
+	
+	
+	#add target and penalty circles to feedback canvas
+		
+	#prepare different feedback text based on trial outcome
+	if released_too_soon:
+		#feedback_canvas.text(too_soon_feedback, x = 200, y = 200)
+		var.points = too_soon_val
+		var.too_slow = 0
+	elif too_slow:
+		var.points = slow_val
+		feedback_canvas.text(slow_feedback, x=200, y=200)
+		var.too_slow = 1
+	elif distance([var.poke_x, var.poke_y], [var.targ_x, var.targ_y]) < radius and distance([var.poke_x, var.poke_y], [var.pen_x, var.targ_y]) < radius:
+		var.points = var.pen_val + var.targ_val
+		feedback_canvas.text(overlap_feedback, x=200, y=200)
+		feedback_canvas.circle(var.targ_x, var.targ_y, radius, color = 'green', penwidth=3, z_index = 1)
+		feedback_canvas.circle(var.pen_x, var.targ_y, radius, fill = True,  color = 'red', z_index = 0)
+		var.too_slow = 0
+	elif distance([var.poke_x, var.poke_y], [var.targ_x, var.targ_y]) < radius:
+		var.points = var.targ_val
+		feedback_canvas.circle(var.targ_x, var.targ_y, radius, color = 'green', penwidth=3, z_index = 1)
+		feedback_canvas.text(targ_feedback, x=200, y=200)
+		var.too_slow = 0	
+	elif distance([var.poke_x, var.poke_y], [var.pen_x, var.targ_y]) < radius:
+		var.points = var.pen_val
+		feedback_canvas.text(pen_feedback, x=200, y=200)
+		var.too_slow = 0	
+		feedback_canvas.circle(var.pen_x, var.targ_y, radius, fill = True,  color = 'red', z_index = 0)
+	else:
+		var.points = miss_val
+		feedback_canvas.text(miss_feedback, x=200, y=200)
+		var.too_slow = 0
+	
+	#show the trial  outcome feedback for a preset time limit
+	t0 = clock.time()
+	while clock.time() - t0 < feedback_limit:
+		feedback_canvas.show()
+	
+	#change total points based on points earned/lost this trial
+	var.total_points += var.points
+	#prepare canvas for displaying total score
+	total_score_canvas.text("Total points: " + str(var.total_points))
+	
+	#display total score feedback for preset time limit
+	t1 = clock.time()
+	while clock.time() - t1 < total_feedback_limit:
+		total_score_canvas.show()
+	
+	#while True:
+		#m.show_cursor(show=True)
+		#get time and position of mouse click
+		#buttons = m.get_pressed()
+		#if button is not None:#buttons[0]:
+			#break
+	__end__
+	___prepare__
+	import math
+	import random
+	import pygame as pg#from psychopy.iohub import launchHubServer
+	# Start the ioHub process. The return variable is what is used
+	# during the experiment to control the iohub process itself,
+	# as well as any running iohub devices.
+	#io=launchHubServer()
+	
+	# By default, ioHub will create Keyboard and Mouse devices and
+	# start monitoring for any events from these devices only.
+	#keyboard = io.devices.keyboard
+	
+	#presentation of target at stim_time for trial_time_limit ms or until poke
+	stim_time = clock.time()
+	my_keyboard = keyboard()
+	
+	def distance(p0, p1):
+		return math.sqrt((p0[0] - p1[0])**2 + (p0[1] - p1[1])**2)
+	
+	#point values for trial outcomes
+	slow_val = -700
+	miss_val = 0
+	overlap_val = var.pen_val + var.targ_val
+	too_soon_val = -25
+	
+	#radii of penalty and target circles
+	radius = 32
+	
+	#get targ and pen positions
+	var.targ_x = random.randint(-166, 166)
+	var.targ_y = random.randint(-166, 166)
+	
+	#determine which side of targ to draw pen
+	if var.pen_side == 'right':
+		var.pen_x = var.targ_x + radius
+	else:
+		var.pen_x = var.targ_x -  radius
+	
+	#time limits
+	if var.time_limit == 'i':
+		trial_time_limit = 1000000
+	else:
+		trial_time_limit = var.time_limit
+	bound_box_time    = 495
+	too_soon_time = 100 
+	#feedback duration
+	feedback_limit     = 1000
+	total_feedback_limit = 1000
+	
+	var.trial_time = None
+	
+	#creates fixation dot canvas
+	fixation_canvas = canvas()
+	fixation_canvas.fixdot()
+	
+	#creates bounding box canvas
+	bound_box_canvas = canvas()
+	bound_box_canvas.rect(-166, -166, 332, 332, fill = False, color = 'blue')
+	
+	#create canvases for drawing stimuli and feedback
+	config_canvas = canvas()
+	feedback_canvas = canvas()
+	total_score_canvas  = canvas()
+	
+	#add target and penalty to configuration canvas
+	config_canvas.circle(var.targ_x, var.targ_y, radius, color = 'green', penwidth=3, z_index = 1)
+	config_canvas.circle(var.pen_x, var.targ_y, radius, fill = True,  color = 'red', z_index = 0)
+	
+	
+	#templates for feedback text
+	pen_feedback = 'Penalty hit! +' + str(var.pen_val )+ ' points'
+	targ_feedback = 'Target hit! +'  + str(var.targ_val) + ' points'
+	overlap_feedback = 'Overlap hit! +' + str(overlap_val) + '  points'
+	miss_feedback = 'Miss! +' + str(miss_val) + ' points'
+	slow_feedback = 'Too slow! ' + str(slow_val) + ' points!'
+	too_soon_feedback = 'You released SPACE too soon!  ' + str(too_soon_val) + ' points!'
+	
+	
+	#create keyboard response collector 
+	kb = keyboard(keylist = ['SPACE', 'space'])
+	#create mouse
+	m = mouse()
+	#m.keylist = [1, 2, 3]
+	poke_pos = []
+	
+	released_too_soon = False
+	__end__
+
+define sequence trial_sequence
+	set flush_keyboard yes
+	set description "Runs a number of items in sequence"
+	run trial_script always
+	run trial_logger always
+
